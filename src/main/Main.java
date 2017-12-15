@@ -21,14 +21,14 @@ public class Main implements IAnimalDeadListener {
 
 					"1) Инфа  \n 2) Покормить животное \n 3) Создать животное \n 4) Провести турнир по прыжкам среди животных \n 5) Удалить животного \n 6) выход");
 			String answer = sc.nextLine();
-			List<Predatoc> cage2 = predatocCage.getCage();
+		
 			switch (inputValidation(answer)) {
 			case 1: {
 				showAnimalInfo();
 				break;
 			}
 			case 2: {
-				feedAnimal(cage2);
+				feedAnimal();
 				break;
 			}
 			case 3: {
@@ -46,7 +46,7 @@ public class Main implements IAnimalDeadListener {
 				break;
 			}
 			case 4: {
-				jumpAll(cage2);
+				jumpAll();
 
 				break;
 			}
