@@ -15,7 +15,7 @@ public class Animal extends Object implements Soundable, Jumpable {
 	public Animal(String nickName, double size) {
 		this.nickName = nickName;
 		this.size = size;
-		fill = 15;
+		fill = 1000;
 		lastFeedTime = System.currentTimeMillis();
 		isAlive = true;
 
@@ -48,16 +48,19 @@ public class Animal extends Object implements Soundable, Jumpable {
 	public void setType(String type) {
 		this.type = type;
 	}
+    protected void die() {
+    	if (animalDeadListener != null && isAlive) {
+			
+			animalDeadListener.onAnimalDead(this);
+		}
+		isAlive = false;
+    }
 
 	public double getFill() {
 		long timeToDeath = (System.currentTimeMillis() - lastFeedTime) / 1000;
 		if (timeToDeath >= fill) {
 			
-			if (animalDeadListener != null && isAlive) {
-				
-				animalDeadListener.onAnimalDead(this);
-			}
-			isAlive = false;
+			die();
 		}
 		return fill;
 	}
