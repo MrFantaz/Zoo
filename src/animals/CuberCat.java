@@ -11,7 +11,6 @@ public class CuberCat extends Feline {
 
 	}
 
-	@Override
 	public void sound() {
 		System.out.println(module.getCuberSound());
 	}

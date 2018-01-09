@@ -42,7 +42,7 @@ public class Main implements IAnimalDeadListener {
 				Animal ani = createAnimal();
 
 				if (ani != null) {
-					if (ani instanceof Predator) {
+					if (ani instanceof Predatoc) {
 						System.out.println("Номер животного в клетке " + mammalCage.addAnimal((Mammal) ani));
 
 					} else if (ani instanceof Bird) {
@@ -320,7 +320,7 @@ public class Main implements IAnimalDeadListener {
 	@Override
 	public void onAnimalDead(Animal animal) {
 		System.out.println("Оно умерло " + animal.toString());
-		if (animal instanceof Predator) {
+		if (animal instanceof Predatoc) {
 			for (int i = 0; i < mammalCage.getCage().size(); i++) {
 				if (mammalCage.getCage().get(i).equals(animal)) {
 
