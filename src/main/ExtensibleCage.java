@@ -57,7 +57,7 @@ public class ExtensibleCage<T extends Animal> {
 
 	@Override
 	public String toString() {
-		Collections.sort(cage,sizeComparator size= new sizeComparator(););
+		Collections.sort(cage,sizeComparator size= new sizeComparator());
 		StringBuilder sb =new StringBuilder();
 		if(cage.size()==0) {
 			sb.append("Cage of");
