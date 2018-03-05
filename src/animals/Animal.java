@@ -1,109 +1,151 @@
 package animals;
 
-import interfaceZoo.Jumpable;
-import interfaceZoo.Soundable;
+import error.AnimalCreationException;
+import food.Food;
+import interfaces.ISoundable;
+import interfaces.Jumpable;
+import io.Logger;
 
-public class Animal extends Object implements Soundable, Jumpable {
-	private String nickName;
-	private double size;
-	public String type;
-	private double fill;
-	private long lastFeedTime;
-	private boolean isAlive;
-	private IAnimalDeadListener animalDeadListener;
+abstract public class Animal implements ISoundable, Jumpable, Comparable<Animal> {
+    @Override
+    public int compareTo(Animal o) {
+        return (int) Math.ceil(this.getSize() - o.getSize());
+    }
 
-	public Animal(String nickName, double size) {
-		this.nickName = nickName;
-		this.size = size;
-		fill = 15;
-		lastFeedTime = System.currentTimeMillis();
-		isAlive = true;
+    private String nickName;
+    private double size;// size in metres
+    private String gender;// male or female
+    private long age;// milliseconds
+    public String type;
+    private double fill;
+    private long lastFeedTime;
+    private double countOfFood;
+    boolean isAlive = true;
+    private IAnimalDeadListener animalDeadListener;
 
-	}
+    public Animal(String nickName, double size) {
+        super();
+        this.nickName = nickName;
+        this.size = size;
+        setFill(60);
+    }
 
-	public void setAnimalDeadListener(IAnimalDeadListener animalDeadListener) {
-		this.animalDeadListener = animalDeadListener;
-	}
+    public interface IAnimalDeadListener {
+        void onAnimalDead(Animal animal);
+    }
 
-	public String getNickName() {
-		return nickName;
-	}
+    public void setAnimalDeadListener(IAnimalDeadListener animalDeadListener) {
+        this.animalDeadListener = animalDeadListener;
+    }
 
-	public void setNickName(String nickName) {
-		this.nickName = nickName;
-	}
+    public void feed(Food f) {
+        switch (f){
+            case MEAT:
+                org.pmw.tinylog.Logger.warn(this+" Eating MEAT");
+                break;
+            case CARROT:
+                org.pmw.tinylog.Logger.warn(this+" Eating CARROT");
+                break;
+        }
+        setFill(getFill()+f.getEnergyValue());
+        Logger.log(this+" fed "+f);
+    }
 
-	public double getSize() {
-		return size;
-	}
+    public static Animal convertFromString(String str)
+            throws AnimalCreationException {
+        String[] arrStr = str.split(",");
+        switch (arrStr[0]) {
+            case "wolf":
+                return new Wolf(arrStr[1], Double.parseDouble(arrStr[2]));
+            case "cat":
+                return new Cat(arrStr[1], new Double(arrStr[2]));
+            case "rabbit":
+                return new Rabbit(arrStr[1], new Double(arrStr[2]));
+            case "bird":
+                return new Bird(arrStr[1], new Double(arrStr[2]));
+        }
+        throw new AnimalCreationException();
+    }
 
-	public void setSize(double size) {
-		this.size = size;
-	}
+    @Override
+    public double jump() {
+        return size * 10 / (size * size);
+    }
 
-	public String getType() {
-		return type;
-	}
+    @Override
+    public String toString() {
+        return "Animal " + type + " " + getNickName() + " size " + getSize();
+    }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getNickName() {
+        return nickName;
+    }
 
-	public double getFill() {
-		long timeToDeath = (System.currentTimeMillis() - lastFeedTime) / 1000;
-		if (timeToDeath >= fill) {
-			
-			if (animalDeadListener != null && isAlive) {
-				
-				animalDeadListener.onAnimalDead(this);
-			}
-			isAlive = false;
-		}
-		return fill;
-	}
+    public double getSize() {
+        return size;
+    }
 
-	public void setFill(double fill) {
-		this.fill = this.fill + fill;
-		lastFeedTime = System.currentTimeMillis();
-	}
+    public void setSize(double size) {
+        this.size = size;
+    }
 
-	public long getLastFeedTime() {
-		return lastFeedTime;
-	}
+    public double getFill() {
+        return fill;
+    }
 
-	public void setLastFeedTime(long lastFeedTime) {
-		this.lastFeedTime = lastFeedTime;
-	}
+    public void dea(){
+        isAlive = false;
+        if (animalDeadListener != null) {
+            animalDeadListener.onAnimalDead(this);
+            System.out.println("animal " + this.getNickName() + " is dead");
 
-	public double feed(double feed) {
-		setFill(feed);
+        }
 
-		return getFill();
-	}
+    }
 
-	@Override
-	public String toString() {
+    public void setFill(double fill) {
+        this.fill = fill;
+        lastFeedTime = System.currentTimeMillis();
+    }
 
-		return "Animal " + getNickName() + " Size " + getSize() + " Type " + getType();
-	}
+    public long getLastFeedTime() {
+        return lastFeedTime;
+    }
 
-	@Override
-	public void makeSound() {
+    public void setLastFeedTime(long lastFeedTime) {
+        this.lastFeedTime = lastFeedTime;
+    }
 
-	}
+    public double getCountOfFood() {
+        return countOfFood;
+    }
 
-	@Override
-	public double jump() {
+    public void setCountOfFood(double countOfFood) {
+        this.countOfFood = countOfFood;
+    }
 
-		return size * 2.3;
-	}
+    public void setAlive(boolean alive) {
+        if (getFill() >= 0) {
+            isAlive = false;
+        } else {
+            isAlive = true;
+        }
+    }
 
-	public void sound() {
-		// TODO Auto-generated method stub
+    public String getGender() {
+        return gender;
+    }
 
-	}
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
 
-	public interface IAnimalDeadListener {
-		void onAnimalDead(Animal animal);
-	}
+    public long getAge() {
+        return age;
+    }
+
+    public void setAge(long age) {
+        this.age = age;
+    }
+
 }

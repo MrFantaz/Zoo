@@ -1,8 +1,18 @@
 package animals;
 
 public abstract class Mammal extends Animal {
-    int pregnantPeriod;
-   public Mammal(String nickName, double size ){
-    	super( nickName,  size);
-    }
+	private int pragnancyPeriod;
+
+	public Mammal(String nickName, double size) {
+		super(nickName, size);
+	}
+
+	public int getPragnancyPeriod() {
+		return pragnancyPeriod;
+	}
+
+	public void setPragnancyPeriod(int pragnancyPeriod) {
+		this.pragnancyPeriod = pragnancyPeriod;
+	}
+
 }
